@@ -2,8 +2,11 @@ require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
-const todoRoutes = require('./routes/todoRoutes'); // Importa las rutas
+ // Importa las rutas
 const uri = process.env.MONGODB_URI;
+const authRoutes = require('./routes/authRoutes'); // Importar rutas de autenticación
+const todoRoutes = require('./routes/todoRoutes'); // Si ya tienes rutas de TODO
+
 const app = express();
 
 // Middleware
@@ -16,6 +19,7 @@ mongoose.connect(uri, { useNewUrlParser: true, useUnifiedTopology: true })
     .then(() => console.log('MongoDB connected'))
     .catch(err => console.error('Error connecting to MongoDB:', err));
 // Rutas
+app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
 
 // Ruta principal
